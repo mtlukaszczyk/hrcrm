@@ -1,0 +1,40 @@
+{% extends "main/main.twig" %}
+
+{% block content %}
+
+    <div class="btn-group" style='display: inline-block;'>
+
+        <p style='display: inline-block;'>
+            <button type="button" class="btn btn-success" onClick="window.location.href = '{{ base_url ~ 'app/contact/profile/new/'}}'">New</button>
+
+
+            <button type="button" class="btn btn-primary" onClick="$('#table_contacts').DataTable().state.clear();
+                    window.location.reload();">Clear Saved Filters</button>
+        </p>
+    </div>
+
+    <table id="table_contacts" class="table table-striped">
+
+        <thead>
+            <tr>
+                {% for key, val in template %}
+                    <th>{{ val }}</th>
+                    {% endfor %}
+                <th></th>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+                <tr>
+                    {% for key, val in template %}
+                        <td>{{ contact[key] }}</td>
+                    {% endfor %}
+                    <td>
+                        <a class='label label-primary' href="{{ base_url ~ 'app/contact/profile/' ~ contact.id ~ '/'}}">Edit</a>
+                        <a class='label label-danger' href="{{ base_url ~ 'app/contact/delete/' ~ contact.id ~ '/'}}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

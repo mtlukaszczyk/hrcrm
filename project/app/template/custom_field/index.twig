@@ -1,0 +1,47 @@
+{% extends "main/main.twig" %}
+
+{% block content %}
+
+    <div id="custom_fields" class='row'>
+        <div class="col col-xs-12 col-md-9">
+            <p>
+                <input type=text class='form-control' v-model="search_phrase" placeholder="Filter"/>
+            </p>
+
+            <table class='table table-striped'>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for='data in filterSearch' v-bind:class='{ active: data.id == current.id, custom_field_hide: data.state == "hidden" }'>
+                        <td v-text="data.name"></td>
+                        <td>
+                            <button class="btn btn-warning" v-if="data.state == 'hidden'" v-on:click="toggle(data.id, 'show');">Show</button>
+                            <button class="btn btn-warning" v-if="data.state == 'on'" v-on:click="toggle(data.id, 'hide');">Hide</button>
+                            
+                            <button class="btn btn-primary" v-on:click="edit(data.id);">Edit</button>
+                            <button class="btn btn-danger" v-on:click="del(data.id);">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p v-if="filterSearch.length == 0">No results found</p>
+        </div>
+
+        <div class="col col-xs-12 col-md-3">
+            <p>
+                Field name: <input class='form-control' v-model="current.name" />
+            </p>
+            <p>
+                <button class='btn btn-primary float-right' v-on:click="save()">Save</button>
+                <button class='btn btn-warning float-right' v-on:click="cancel()">Cancel</button>
+            </p>
+        </div>
+    </div>
+
+
+{% endblock %}

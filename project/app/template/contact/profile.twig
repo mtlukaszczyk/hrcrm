@@ -1,0 +1,148 @@
+{% extends "main/main.twig" %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col col-xs-12 col-md-6">
+
+            {{ simpleInput('name', data.name, 'Name') | raw }}
+            {{ simpleInput('surname', data.surname, 'Surname') | raw }}
+
+            <label>E-Mail</label>
+
+            <div class="form-group has-feedback input-group">
+                <div class="input-group-btn" style="vertical-align: bottom">
+                    <button class="btn btn-default" onClick="window.location.href = 'mailto:' + $('#email').val();">
+                        <i class="glyphicon glyphicon-envelope"></i>
+                    </button>
+                </div>
+
+
+                <input type="text" class="form-control data-grab" id="email" value="{{data.email}}" old_value="{{data.email}}"/>
+            </div>
+
+            <label>Phone</label>
+
+            <div class="form-group has-feedback input-group">
+                <div class="input-group-btn" style="vertical-align: bottom">
+                    <button class="btn btn-default" onClick="window.location.href = '{{settings('phone_protocol')}}' + $('#phone').val();">
+                        <i class="glyphicon glyphicon-phone-alt"></i>
+                    </button>
+                </div>
+
+                <input type="text" class="form-control data-grab" id="phone" value="{{data.phone}}" old_value="{{data.phone}}"/>
+            </div>            
+
+            {{ simpleInput('city', data.city, 'City') | raw }}
+
+            <label>Website</label>
+
+            <div class="form-group has-feedback input-group">
+                <div class="input-group-btn" style="vertical-align: bottom">
+                    <button class="btn btn-default" onClick="window.location.href = 'http://' + $('#www').val();">
+                        <i class="glyphicon glyphicon-log-in"></i>
+                    </button>
+                </div>
+
+                <input type="text" class="form-control data-grab" id="www" value="{{data.www}}" old_value="{{data.www}}"/>
+            </div>
+
+            <label>LinkedIn</label>
+
+            <div class="form-group has-feedback input-group">
+                <div class="input-group-btn" style="vertical-align: bottom">
+                    <button class="btn btn-default" onClick="window.location.href = 'http://' + $('#linkedin').val();">
+                        <i class="fa fa-linkedin"></i>
+                    </button>
+                </div>
+
+                <input type="text" class="form-control data-grab" id="linkedin" value="{{data.linkedin}}" old_value="{{data.linkedin}}"/>
+            </div>
+
+
+            {{ simpleInput('xing', data.xing, 'XING') | raw }}
+
+            {{ simpleInput('greeting', data.greeting, 'Greeting') | raw }}
+
+            {{ simpleInput('contract_type', data.contract_type, 'Prefered contract type') | raw }}
+            {{ simpleInput('salary', data.salary, 'Prefered salary') | raw }}
+
+            {{ simpleInput('availability', data.availability, 'Availability') | raw }}
+
+            {% for customField in customFields %}
+                {{ simpleInput('custom' ~ customField.id, customField.value, customField.name) | raw }}    
+
+            {% endfor %}
+
+        </div>
+
+        <div class="col col-xs-12 col-md-6">
+
+            <label>Groups</label>
+
+            <div>
+
+                <select class="selectpicker form-control" id="groups" multiple>
+                    {% for group in groups %}
+                        <option value="{{group.id}}" {{ group.selected ? 'selected' : '' }}>{{group.name}}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+
+            <div id="comments">
+
+                <label>Comments</label>
+
+                <template v-for="comment in comments">
+                    <div class="panel" 
+                         v-bind:class='{ "panel-warning": (comment.important == "y"), "panel-default": (comment.important == "n"),   }'>
+                        <div class="comments-heading panel-heading">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true" v-if="comment.type == 'mail'"></span>
+                            <span class="glyphicon glyphicon-calendar" aria-hidden="true" v-if="comment.type == 'termin'"></span>
+                            <span class="glyphicon glyphicon-earphone" aria-hidden="true" v-if="comment.type == 'phone'"></span>
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true" v-if="comment.type == 'note'"></span>
+                            <span class="glyphicon glyphicon-user" aria-hidden="true" v-if="comment.type == 'meeting'"></span>
+
+
+                            <span v-text="comment.created_at"></span>
+                            <span style="float: right;">
+                                <a class="label label-warning" v-on:click="importantSwitch(comment.id)">Important</a>
+                                <a class="label label-primary" v-on:click="edit(comment.id)">Edit</a>
+                                <a class="label label-danger" v-on:click="del(comment.id)">Delete</a>
+
+                            </span>
+                        </div>
+                        <div class="panel-body"  v-text="comment.message"></div>
+                        <div class="panel-footer" aria-hidden="true" v-if="comment.type == 'termin'" v-text="comment.act_dt"></div>
+                    </div>
+                </template>
+
+
+                <textarea class='form-control' style='resize: vertical;' v-model="current.message">
+                </textarea>
+                <input class='form-control' v-if='current.type == "termin"' v-model="current.act_dt"/>
+
+                <p>
+                    <select class='comments-select-type form-control' v-model='current.type'>
+                        <option value='mail'>Mail</option>
+                        <option value='termin'>Termin</option>
+                        <option value='phone'>Phone</option>
+                        <option value='note'>Note</option>
+                        <option value='meeting'>Meeting</option>
+                    </select>
+
+                    <span style="float: right;">
+                        <a class="label label-success" v-on:click="save()">Save</a>
+                        <a class="label label-warning" v-if="current.id !== ''" v-on:click="cancel()">Cancel</a>
+                    </span>
+                </p>
+            </div>    
+
+
+
+        </div>
+
+
+    {% endblock %}

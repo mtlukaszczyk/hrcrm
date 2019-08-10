@@ -1,0 +1,22 @@
+<IfModule mod_rewrite.c>
+
+Options FollowSymLinks
+
+RewriteEngine On
+
+RewriteBase /
+
+
+RewriteRule ^js/(.+)$                                           resource/js/$1 [END]
+RewriteRule ^css/(.+)$                                          resource/css/$1 [END]
+
+RewriteRule ^([a-z]{3})/(.+)/$                                  index.php?lang_symbol=$1&params=$2 [END]
+
+RewriteRule ^([a-z]{3})/$                                       index.php?lang_symbol=$1&controller=user [END]
+
+</IfModule>
+
+
+
+ErrorDocument 404 "<H1>404</H1>"
+

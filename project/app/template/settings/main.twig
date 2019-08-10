@@ -1,0 +1,19 @@
+{% extends "main/main.twig" %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col col-xs-12 col-md-6">
+
+            {% for key, field in fields %}
+
+                {{ simpleInput(key, data[key], field) | raw }}
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+{% endblock %}

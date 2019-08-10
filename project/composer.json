@@ -1,0 +1,12 @@
+{
+    "require": {
+        "filp/whoops": "^2.1",
+        "twig/twig": "~2.0",
+        "firephp/firephp-core": "^0.4.0",
+        "illuminate/database": "^5.4",
+        "illuminate/events": "^5.4",
+        "illuminate/support": "^5.4",
+        "doctrine/dbal": "^2.8",
+        "predis/predis": "^1.1"
+    }
+}

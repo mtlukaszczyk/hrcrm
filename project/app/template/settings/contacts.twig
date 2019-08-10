@@ -1,0 +1,14 @@
+{% extends "main/main.twig" %}
+
+{% block content %}
+
+    <ul class="list-group">
+        {% for element in template %}
+            <li class="list-group-item" data-key="{{element.key}}">
+                <input class="templateElement" type="checkbox" {% if element.selected %} checked="checked" {% endif %}/> {{element.name}}
+            </li>
+
+        {% endfor %}
+    </ul>
+
+{% endblock %}
